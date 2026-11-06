@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Payment Monitoring | ITB Dewantara</title>
+<style>
+:root{--navy:#102a43;--blue:#1769aa;--cyan:#e8f4fc;--bg:#f4f7fb;--ink:#243b53;--muted:#718096;--line:#e5edf5;--green:#16865b;--red:#d64545;--orange:#d88719}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+.layout{display:flex;min-height:100vh}.sidebar{width:245px;background:linear-gradient(180deg,#102a43,#153e60);color:white;padding:25px 16px;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px 28px;border-bottom:1px solid #ffffff25}.logo{width:42px;height:42px;border-radius:12px;background:#fff;color:var(--blue);display:grid;place-items:center;font-weight:900;font-size:17px}.brand strong{display:block;font-size:14px;letter-spacing:.3px}.brand small{color:#b9d3e8;font-size:11px}
+.nav-label{font-size:10px;color:#9bb8ce;letter-spacing:1.5px;margin:26px 10px 10px}.nav button{width:100%;border:0;background:transparent;color:#d9e7f2;text-align:left;padding:12px 13px;border-radius:9px;margin:3px 0;cursor:pointer;font-size:13px}.nav button.active,.nav button:hover{background:#ffffff1c;color:#fff}.nav button span{display:inline-block;width:25px}
+.sidebar-foot{position:sticky;top:90vh;margin:42px 8px 0;color:#b9d3e8;font-size:11px;line-height:1.6}
+.main{flex:1;min-width:0}.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 32px}.crumb{font-size:13px;color:var(--muted)}.profile{display:flex;align-items:center;gap:10px;font-size:12px}.avatar{width:34px;height:34px;border-radius:50%;background:#dcecf8;color:var(--blue);display:grid;place-items:center;font-weight:700}
+.content{padding:28px 32px;max-width:1500px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}.heading h1{font-size:24px;margin:0 0 7px;color:var(--navy)}.heading p{margin:0;color:var(--muted);font-size:13px}.btn{border:0;border-radius:8px;padding:10px 15px;background:var(--blue);color:white;font-weight:600;font-size:12px;cursor:pointer}.btn.secondary{background:#edf5fb;color:var(--blue);border:1px solid #d5e7f5}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}.card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #16324f08}.card-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}.icon{width:35px;height:35px;border-radius:10px;background:var(--cyan);display:grid;place-items:center;font-size:17px}.value{font-size:26px;font-weight:750;color:var(--navy);margin:12px 0 5px}.hint{font-size:11px;color:var(--muted)}.hint b{color:var(--green)}
+.grid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:20px;box-shadow:0 3px 12px #16324f08}.panel h3{margin:0 0 5px;font-size:14px;color:var(--navy)}.sub{font-size:11px;color:var(--muted);margin-bottom:18px}
+.chart-wrap{height:210px;position:relative}.bar-chart{height:180px;display:flex;align-items:flex-end;justify-content:space-around;border-bottom:1px solid var(--line);padding:0 10px;gap:12px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 43px,#eef2f7 44px)}
+.bar-group{height:100%;display:flex;align-items:flex-end;gap:5px;position:relative;flex:1;justify-content:center}.bar{width:18px;border-radius:5px 5px 0 0;background:#2b83c6}.bar.paid{background:#35a879}.bar-label{position:absolute;bottom:-22px;font-size:10px;color:var(--muted)}
+.legend{display:flex;gap:15px;font-size:10px;color:var(--muted);margin-top:27px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:#35a879}.dot.blue{background:#2b83c6}
+.donut-area{display:flex;align-items:center;justify-content:center;gap:25px;min-height:190px}.donut{width:155px;height:155px;border-radius:50%;background:conic-gradient(#16865b 0 58%,#e2a23b 58% 80%,#d95c5c 80% 100%);position:relative}.donut:after{content:"";position:absolute;inset:23px;background:white;border-radius:50%}.donut-center{position:absolute;inset:0;z-index:1;display:grid;place-content:center;text-align:center;font-weight:750;font-size:22px;color:var(--navy)}.donut-center small{font-size:10px;color:var(--muted);font-weight:400}.legend-list{font-size:11px;line-height:2.3;color:var(--muted)}.legend-list b{color:var(--ink);float:right;margin-left:15px}
+.table-panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:20px}.table-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.table-head h3{font-size:14px;margin:0;color:var(--navy)}.filters{display:flex;gap:8px;flex-wrap:wrap}.filters input,.filters select{border:1px solid var(--line);border-radius:7px;padding:9px 10px;font-size:11px;background:white;color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:11px}th{text-align:left;color:#8292a5;background:#f7f9fc;font-weight:650;padding:12px 10px}td{padding:12px 10px;border-top:1px solid #edf1f5}tbody tr:hover{background:#f9fbfd}.badge{padding:5px 8px;border-radius:20px;font-size:10px;font-weight:650}.paid-b{background:#e5f5ee;color:#16865b}.partial-b{background:#fff4df;color:#a96a08}.unpaid-b{background:#fdeaea;color:#c33d3d}
+.page{display:none}.page.active{display:block}.empty-note{font-size:12px;color:var(--muted);padding:22px;text-align:center}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.form-grid label{font-size:12px;color:var(--muted)}.form-grid input,.form-grid select{display:block;width:100%;padding:11px;border:1px solid var(--line);border-radius:7px;margin-top:6px}
+.notice{background:#fff8e8;border:1px solid #f3dfb6;color:#86601b;border-radius:9px;padding:12px;font-size:11px;margin-top:16px}
+@media(max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.sidebar{width:205px}.content{padding:22px}}
+@media(max-width:650px){.layout{display:block}.sidebar{width:100%;padding:13px}.brand{padding-bottom:12px}.nav{display:flex;overflow:auto}.nav-label,.sidebar-foot{display:none}.nav button{white-space:nowrap;width:auto}.topbar{padding:0 16px}.content{padding:18px 12px}.cards{grid-template-columns:1fr 1fr}.value{font-size:20px}.heading{display:block}.heading .btn{margin-top:12px}.table-head{display:block}.filters{margin-top:12px}table{min-width:700px}.table-scroll{overflow:auto}.form-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+ <div class="brand"><div class="logo">DW</div><div><strong>ITB DEWANTARA</strong><small>Payment Monitoring</small></div></div>
+ <div class="nav-label">MENU UTAMA</div>
+ <nav class="nav">
+  <button class="active" data-page="dashboard"><span>▦</span>Dashboard</button>
+  <button data-page="students"><span>♙</span>Data Siswa</button>
+  <button data-page="invoices"><span>▤</span>Data Tagihan</button>
+  <button data-page="payments"><span>▣</span>Riwayat Pembayaran</button>
+  <button data-page="input"><span>＋</span>Input Pembayaran</button>
+  <button data-page="reports"><span>▥</span>Laporan</button>
+ </nav>
+ <div class="sidebar-foot">Prototype antarmuka<br>Versi demo · Tahun Ajaran 2026/2027</div>
+</aside>
+<main class="main">
+ <header class="topbar"><div class="crumb">Administrasi / <b id="crumb">Dashboard</b></div><div class="profile"><div class="avatar">A</div><div><b>Administrator</b><br><span style="color:#8292a5">Admin Keuangan</span></div></div></header>
+ <div class="content">
+  <section class="page active" id="dashboard">
+   <div class="heading"><div><h1>Dashboard Pembayaran</h1><p>Ringkasan status pembayaran siswa — November 2026</p></div><button class="btn secondary" onclick="alert('Pada versi aplikasi, tombol ini dapat dihubungkan ke ekspor laporan.')">↓ Ekspor Laporan</button></div>
+   <div class="cards">
+    <div class="card"><div class="card-top">Total Siswa <span class="icon">♙</span></div><div class="value">500</div><div class="hint">Siswa terdaftar pada data dummy</div></div>
+    <div class="card"><div class="card-top">Sudah Lunas <span class="icon">✓</span></div><div class="value">290</div><div class="hint"><b>58,0%</b> dari total siswa</div></div>
+    <div class="card"><div class="card-top">Bayar Sebagian <span class="icon">◷</span></div><div class="value">110</div><div class="hint">22,0% dari total siswa</div></div>
+    <div class="card"><div class="card-top">Belum Bayar <span class="icon">!</span></div><div class="value">100</div><div class="hint">20,0% dari total siswa</div></div>
+   </div>
+   <div class="cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><div class="card-top">Total Tagihan <span class="icon">▤</span></div><div class="value" style="font-size:21px">Rp 237,5 jt</div><div class="hint">Akumulasi tagihan periode ini</div></div>
+    <div class="card"><div class="card-top">Total Pembayaran <span class="icon">↗</span></div><div class="value" style="font-size:21px">Rp 164,2 jt</div><div class="hint"><b>Penerimaan tercatat</b></div></div>
+    <div class="card"><div class="card-top">Total Tunggakan <span class="icon">⚑</span></div><div class="value" style="font-size:21px">Rp 73,3 jt</div><div class="hint">Sisa tagihan belum dibayar</div></div>
+   </div>
+   <div class="grid">
+    <div class="panel"><h3>Ringkasan Pembayaran per Kelas</h3><div class="sub">Perbandingan nominal pembayaran dan tagihan (ilustrasi)</div>
+     <div class="chart-wrap"><div class="bar-chart">
+      <div class="bar-group"><div class="bar paid" style="height:65%"></div><div class="bar" style="height:88%"></div><span class="bar-label">X-A</span></div>
+      <div class="bar-group"><div class="bar paid" style="height:72%"></div><div class="bar" style="height:92%"></div><span class="bar-label">X-B</span></div>
+      <div class="bar-group"><div class="bar paid" style="height:55%"></div><div class="bar" style="height:84%"></div><span class="bar-label">X-C</span></div>
+      <div class="bar-group"><div class="bar paid" style="height:70%"></div><div class="bar" style="height:90%"></div><span class="bar-label">XI-A</span></div>
+      <div class="bar-group"><div class="bar paid" style="height:60%"></div><div class="bar" style="height:86%"></div><span class="bar-label">XI-B</span></div>
+      <div class="bar-group"><div class="bar paid" style="height:77%"></div><div class="bar" style="height:94%"></div><span class="bar-label">XII-A</span></div>
+     </div><div class="legend"><span><i class="dot"></i>Total dibayar</span><span><i class="dot blue"></i>Total tagihan</span></div></div>
+    </div>
+    <div class="panel"><h3>Komposisi Status Pembayaran</h3><div class="sub">Status siswa untuk periode terpilih</div>
+     <div class="donut-area"><div class="donut"><div class="donut-center">58%<small>Lunas</small></div></div><div class="legend-list"><div>🟢 Lunas <b>290</b></div><div>🟠 Sebagian <b>110</b></div><div>🔴 Belum bayar <b>100</b></div></div></div>
+    </div>
+   </div>
+   <div class="table-panel"><div class="table-head"><h3>Perlu Tindak Lanjut</h3><button class="btn secondary" onclick="showPage('students')">Lihat semua siswa →</button></div>
+    <div class="table-scroll"><table><thead><tr><th>NIS</th><th>Nama Siswa</th><th>Kelas</th><th>Total Tagihan</th><th>Sudah Dibayar</th><th>Sisa</th><th>Status</th></tr></thead><tbody id="attentionRows"></tbody></table></div>
+   </div>
+  </section>
+  <section class="page" id="students">
+   <div class="heading"><div><h1>Data Siswa</h1><p>Daftar siswa dan status pembayaran pada periode berjalan.</p></div><button class="btn" onclick="alert('Fitur tambah siswa akan diaktifkan pada versi terhubung database.')">＋ Tambah Siswa</button></div>
+   <div class="table-panel"><div class="table-head"><h3>500 Data Siswa (contoh tampilan)</h3><div class="filters"><input id="studentSearch" placeholder="Cari nama / NIS..." oninput="renderStudents()"><select id="statusFilter" onchange="renderStudents()"><option value="">Semua status</option><option>Lunas</option><option>Sebagian</option><option>Belum Bayar</option></select></div></div>
+    <div class="table-scroll"><table><thead><tr><th>NIS</th><th>Nama Siswa</th><th>Jenis Kelamin</th><th>Kelas</th><th>Tahun Ajaran</th><th>Status Pembayaran</th></tr></thead><tbody id="studentRows"></tbody></table></div><div class="sub" id="pageInfo" style="margin-top:12px"></div>
+   </div>
+  </section>
+  <section class="page" id="invoices">
+   <div class="heading"><div><h1>Data Tagihan</h1><p>Monitoring tagihan dan sisa pembayaran siswa.</p></div><button class="btn" onclick="alert('Form tambah tagihan tersedia pada pengembangan berikutnya.')">＋ Buat Tagihan</button></div>
+   <div class="table-panel"><div class="table-head"><h3>Tagihan Periode November 2026</h3><div class="filters"><input placeholder="Cari siswa..." oninput="filterSimple(this,'invoiceRows')"></div></div><div class="table-scroll"><table><thead><tr><th>ID Tagihan</th><th>NIS</th><th>Nama Siswa</th><th>Jenis</th><th>Jatuh Tempo</th><th>Tagihan</th><th>Dibayar</th><th>Sisa</th><th>Status</th></tr></thead><tbody id="invoiceRows"></tbody></table></div></div>
+  </section>
+  <section class="page" id="payments">
+   <div class="heading"><div><h1>Riwayat Pembayaran</h1><p>Daftar transaksi pembayaran yang telah dicatat.</p></div><button class="btn secondary" onclick="alert('Ekspor transaksi akan tersedia pada versi database.')">↓ Ekspor Transaksi</button></div>
+   <div class="table-panel"><div class="table-head"><h3>Transaksi Terbaru</h3><input class="filters" placeholder="Cari transaksi..." oninput="filterSimple(this,'paymentRows')"></div><div class="table-scroll"><table><thead><tr><th>ID Pembayaran</th><th>Tanggal</th><th>NIS</th><th>Nama Siswa</th><th>Metode</th><th>Nominal</th><th>Referensi</th></tr></thead><tbody id="paymentRows"></tbody></table></div></div>
+  </section>
+  <section class="page" id="input">
+   <div class="heading"><div><h1>Input Pembayaran</h1><p>Form simulasi pencatatan transaksi pembayaran siswa.</p></div></div>
+   <div class="panel"><h3>Form Pembayaran Siswa</h3><div class="sub">Contoh antarmuka — belum menyimpan transaksi ke database.</div>
+    <div class="form-grid"><label>NIS Siswa<input placeholder="Masukkan NIS"></label><label>Nama Siswa<input placeholder="Nama siswa" disabled></label><label>Jenis Pembayaran<select><option>SPP Bulanan</option><option>Registrasi</option><option>Uang Gedung</option><option>Biaya Lainnya</option></select></label><label>Periode Tagihan<input type="month" value="2026-11"></label><label>Tanggal Pembayaran<input type="date" value="2026-11-02"></label><label>Jumlah Dibayar (Rp)<input type="number" placeholder="Contoh: 500000"></label><label>Metode Pembayaran<select><option>Transfer Bank</option><option>Tunai</option><option>QRIS</option></select></label><label>Nomor Referensi<input placeholder="Nomor bukti transaksi"></label></div>
+    <div style="margin-top:18px"><button class="btn" onclick="alert('Ini masih prototype HTML. Data belum disimpan. Pada versi Streamlit, form akan terhubung ke database.')">Simpan Pembayaran</button></div>
+    <div class="notice">Catatan: halaman ini merupakan prototype desain HTML. Tombol dan form belum terhubung ke penyimpanan data.</div>
+   </div>
+  </section>
+  <section class="page" id="reports">
+   <div class="heading"><div><h1>Laporan Pembayaran</h1><p>Ringkasan laporan keuangan pendidikan.</p></div></div>
+   <div class="cards"><div class="card"><div class="card-top">Persentase Lunas</div><div class="value">58,0%</div><div class="hint">290 dari 500 siswa</div></div><div class="card"><div class="card-top">Belum Lunas</div><div class="value">42,0%</div><div class="hint">210 siswa</div></div><div class="card"><div class="card-top">Penerimaan</div><div class="value" style="font-size:21px">Rp 164,2 jt</div><div class="hint">Periode November 2026</div></div></div>
+   <div class="panel"><h3>Filter Laporan</h3><div class="form-grid"><label>Periode<select><option>November 2026</option><option>Oktober 2026</option></select></label><label>Kelas<select><option>Semua Kelas</option><option>X-A</option><option>XI-A</option><option>XII-A</option></select></label></div><div style="margin-top:16px"><button class="btn" onclick="alert('Laporan akan dapat diunduh setelah aplikasi dihubungkan ke database.')">Tampilkan Laporan</button></div></div>
+  </section>
+ </div>
+</main>
+</div>
+<script>
+const first=['Andi','Budi','Citra','Dewi','Eka','Fajar','Gita','Hana','Irfan','Jihan','Kevin','Laras','Maya','Nanda','Oki','Putri','Raka','Salsa','Tono','Vina'];
+const last=['Pratama','Saputra','Lestari','Permata','Wijaya','Kusuma','Ramadhan','Puspita','Firmansyah','Anggraini'];
+const classes=['X-A','X-B','X-C','XI-A','XI-B','XI-C','XII-A','XII-B','XII-C'];
+// Seeded pseudo-random data for a repeatable 500-student HTML demo.
+let seed=2026; function rnd(){seed=(seed*9301+49297)%233280;return seed/233280}
+const students=Array.from({length:500},(_,i)=>{let x=rnd();let status=x<.58?'Lunas':x<.80?'Sebagian':'Belum Bayar';let fee=[350000,400000,450000,500000,550000,600000][Math.floor(rnd()*6)];let paid=status==='Lunas'?fee:status==='Sebagian'?Math.floor((.15+rnd()*.65)*fee/10000)*10000:0;return {id:i+1,nis:'26'+String(i+1).padStart(5,'0'),name:first[Math.floor(rnd()*first.length)]+' '+last[Math.floor(rnd()*last.length)],gender:rnd()>.5?'Laki-laki':'Perempuan',kelas:classes[Math.floor(rnd()*classes.length)],status,fee,paid,sisa:fee-paid}});
+function badge(s){let cl=s==='Lunas'?'paid-b':s==='Sebagian'?'partial-b':'unpaid-b';return `<span class="badge ${cl}">${s}</span>`}
+function rupiah(n){return 'Rp '+n.toLocaleString('id-ID')}
+function renderStudents(){let q=(document.getElementById('studentSearch')?.value||'').toLowerCase(),f=document.getElementById('statusFilter')?.value||'';let arr=students.filter(s=>(s.name.toLowerCase().includes(q)||s.nis.includes(q))&&(!f||s.status===f));document.getElementById('studentRows').innerHTML=arr.slice(0,50).map(s=>`<tr><td>${s.nis}</td><td>${s.name}</td><td>${s.gender}</td><td>${s.kelas}</td><td>2026/2027</td><td>${badge(s.status)}</td></tr>`).join('');document.getElementById('pageInfo').textContent=`Menampilkan ${Math.min(arr.length,50)} dari ${arr.length} siswa yang sesuai filter. Demo dibatasi 50 baris per tampilan.`}
+function filterSimple(input,id){let q=input.value.toLowerCase();document.querySelectorAll('#'+id+' tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));let label=document.querySelector(`.nav button[data-page="${id}"]`).innerText.trim();document.getElementById('crumb').textContent=label;window.scrollTo(0,0)}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.getElementById('attentionRows').innerHTML=students.filter(s=>s.status!=='Lunas').slice(0,6).map(s=>`<tr><td>${s.nis}</td><td>${s.name}</td><td>${s.kelas}</td><td>${rupiah(s.fee)}</td><td>${rupiah(s.paid)}</td><td>${rupiah(s.sisa)}</td><td>${badge(s.status)}</td></tr>`).join('');
+document.getElementById('invoiceRows').innerHTML=students.slice(0,100).map(s=>`<tr><td>T${String(s.id).padStart(4,'0')}</td><td>${s.nis}</td><td>${s.name}</td><td>SPP</td><td>10 Nov 2026</td><td>${rupiah(s.fee)}</td><td>${rupiah(s.paid)}</td><td>${rupiah(s.sisa)}</td><td>${badge(s.status)}</td></tr>`).join('');
+document.getElementById('paymentRows').innerHTML=students.filter(s=>s.paid>0).slice(0,100).map(s=>`<tr><td>P${String(s.id).padStart(4,'0')}</td><td>02 Nov 2026</td><td>${s.nis}</td><td>${s.name}</td><td>${['Transfer','Tunai','QRIS'][s.id%3]}</td><td>${rupiah(s.paid)}</td><td>REF${100000+s.id}</td></tr>`).join('');
+renderStudents();
+</script>
+</body></html>
